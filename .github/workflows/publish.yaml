@@ -16,3 +16,6 @@ jobs:
       - name: core
         working-directory: ./core
         run: npx jsr publish
+      - name: html
+        working-directory: ./html
+        run: npx jsr publish
