@@ -19,3 +19,6 @@ jobs:
       - name: html
         working-directory: ./html
         run: npx jsr publish
+      - name: i18n
+        working-directory: ./i18n
+        run: npx jsr publish
