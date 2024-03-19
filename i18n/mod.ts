@@ -21,7 +21,13 @@ export type Translation = {
 };
 
 /** Replaces all the variables in the templated string */
-const replaceVariables = (str: string, variables: Variables) => {
+const replaceVariables = (
+  str: string,
+  variables: Variables
+): {
+  updated: string;
+  dynamics: Set<Dynamic<string | number>>;
+} => {
   const dynamics = new Set<Dynamic<string | number>>();
 
   // A small replace all function since this package will be SUPER famous and used across the oldest browsers in the world
