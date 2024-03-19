@@ -1,6 +1,6 @@
-# Dynamic
+# dynamic/core
 
-A group of features all centered around one idea: create truly reactive values without overhead or compilation.
+The core piece to enabling truly reactive values without overhead or compilation.
 
 The premise is really simple, you wrap a value which other logic needs to react to in `dynamic(value)` and others will know when it changed. The main application currently is in the module `@dynamic/html` which enables a reactive DOM.
 
