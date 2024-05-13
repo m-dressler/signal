@@ -1,6 +1,6 @@
-# dynamic/i18n
+# signal/i18n
 
-A showcase example on how i18n could be powered by dynamic values
+A showcase example on how i18n could be powered by Signal values
 
 ## Use
 
@@ -16,8 +16,8 @@ const language = window.navigator.languages.find(lang => translations[lang]) || 
 // Create i18n instance with that translation
 const { t } = i18n(translations[language]);
 
-// Initialize our dynamic value
-const name = dynamic('Sandra');
+// Initialize our Signal value
+const name = Signal('Sandra');
 const translated = t('hello', { name });
 
 // Test 

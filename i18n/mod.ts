@@ -1,21 +1,21 @@
-import { Dynamic, isDynamic, OrDynamic, dynamic } from "@dynamic/core";
+import { Signal, isSignal, OrSignal } from "@signal/core";
 
 /** Variables to be replaced in the translated value which can be specified using {}, e.g.: "Hello {name}!" */
-export type Variables = Record<string, OrDynamic<string | number>>;
+export type Variables = Record<string, OrSignal<string | number>>;
 
 /**
  * The translate function returned by i18n
  *
- * Returns a string if no dynamic variables are passed or a string which is also a dynamic if a dynamic variable was found.
+ * Returns a string if no Signal variables are passed or a string which is also a Signal if a Signal variable was found.
  */
 export type Translate = (
   key: string,
   variables?: Variables
-) => string | (string & Dynamic<string>);
+) => string | (string & Signal<string>);
 
 /** A mapping from language to translation map */
 export type Translations = { [key: string]: Translation };
-/** A map of keys and their (dynamic) values in that language */
+/** A map of keys and their (Signal) values in that language */
 export type Translation = {
   [key: string]: string | Translation;
 };
@@ -26,9 +26,9 @@ const replaceVariables = (
   variables: Variables
 ): {
   updated: string;
-  dynamics: Set<Dynamic<string | number>>;
+  signals: Set<Signal<string | number>>;
 } => {
-  const dynamics = new Set<Dynamic<string | number>>();
+  const signals = new Set<Signal<string | number>>();
 
   // A small replace all function since this package will be SUPER famous and used across the oldest browsers in the world
   for (let i = 0; i < str.length; ++i) {
@@ -41,18 +41,18 @@ const replaceVariables = (
       // Ignore any "{ABC}" expressions w/o variables
       if (!value) continue;
 
-      if (isDynamic(value)) dynamics.add(value);
+      if (isSignal(value)) signals.add(value);
 
-      // Convert dynamic to value and value to string
-      const stringValue = (isDynamic(value) ? value.value : value) + "";
-      // Replace the expressing with the value or the dynamic's value
+      // Convert Signal to value and value to string
+      const stringValue = (isSignal(value) ? value.value : value) + "";
+      // Replace the expressing with the value or the signal's value
       str = str.substring(0, i) + stringValue + str.substring(j + 1);
       // We removed j - i characters while adding stringValue.length characters
       i = i - (j - i) + stringValue.length;
     }
   }
 
-  return { updated: str, dynamics };
+  return { updated: str, signals };
 };
 
 /** Creates a new instance of an internationalization function with the provided language's translations */
@@ -70,19 +70,19 @@ export const i18n = (translation: Translation): { t: Translate } => ({
 
     if (!variables) return value;
 
-    const { updated, dynamics } = replaceVariables(value, variables);
-    // If no dynamics were used return normal string
-    if (!dynamics.size) return updated;
+    const { updated, signals } = replaceVariables(value, variables);
+    // If no Signals were used return normal string
+    if (!signals.size) return updated;
 
-    const asDynamic = dynamic(updated);
-    // Whenever a dynamic changes, recompute the string and update this dynamic
-    dynamics.forEach((dynamic) =>
-      dynamic.listen(() => {
-        asDynamic.value = replaceVariables(value, variables).updated;
+    const asSignal = Signal(updated);
+    // Whenever a Signal changes, recompute the string and update this Signal
+    signals.forEach((signal) =>
+      signal.listen(() => {
+        asSignal.value = replaceVariables(value, variables).updated;
       })
     );
     // Keep it as a string for expected functionality but also make it the
-    // dynamic version of the string if the recipient supports it
-    return Object.assign(updated, asDynamic);
+    // Signal version of the string if the recipient supports it
+    return Object.assign(updated, asSignal);
   },
 });

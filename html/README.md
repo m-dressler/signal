@@ -1,12 +1,12 @@
-# dynamic/html
+# signal/html
 
 Make the DOM dynamic by creating elements through this module's API which automatically updates dynamic values on the element.
 
 ## Use
 
 ```ts
-const name = dynamic('Static?');
-const hidden = dynamic(false);
+const name = Signal('Static?');
+const hidden = Signal(false);
 
 const h1 = createElement('h1', {
     innerText: name,

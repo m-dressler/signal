@@ -1,9 +1,9 @@
 {
-  "name": "@dynamic/html",
+  "name": "@signal/html",
   "version": "0.0.0",
   "exports": "./mod.ts",
   "compilerOptions": {
     "lib": ["dom", "es2015"]
   },
-  "imports": { "@dynamic/core": "jsr:@dynamic/core@^0.0.0" }
+  "imports": { "@signal/core": "jsr:@signal/core@^0.0.0" }
 }
