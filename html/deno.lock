@@ -6,7 +6,7 @@
     },
     "jsr": {
       "@signal/core@0.0.0": {
-        "integrity": "30127ce58c58fb584eed0a655eafe1e3eeb66a46fa0d5f144eac4161c96d960d"
+        "integrity": "592f352aad0c6aabfbeb19737493ccb3c2db252bf956fb51df2dead6edd08ada"
       }
     }
   },
